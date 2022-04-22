@@ -1,35 +1,35 @@
-const SIZE_BLOCK = 30;
+const SIZE_BLOCK = 40;
 
 //механика
 
 const game = {
     area:[
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','o'],
-        ['o','o','o','o','o','o','o','o','o','x'],
-        ['o','o','o','o','x','x','o','o','o','x'],
-        ['o','o','o','o','x','x','o','o','x','x'],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','o',],
+        ['o','o','o','o','o','o','o','o','o','x',],
+        ['o','o','o','o','x','x','o','o','o','x',],
+        ['o','o','o','o','x','x','o','o','x','x',],
     ],
 
-    activeTetromino(){
-        x: 0;
-        y: 0;
-        block:[
+    activeTetromino: {
+        x: 3,
+        y: 0,
+        block: [
          ['o','x','o'],
          ['o','x','o'],
          ['x','x','o'],
@@ -37,23 +37,36 @@ const game = {
     },
 
     moveLeft(){
-
+        this.activeTetromino.x -= 1;
     },
 
     moveRight(){
-
+        this.activeTetromino.x += 1;
     },
 
     moveDown(){
-
+        this.activeTetromino.y += 1;
     },
 
     rotateTetromino(){
 
     },
+
+    get viewArea(){
+        const area = JSON.parse(JSON.stringify(this.area));
+        const {x, y, block: tetromino} = this.activeTetromino;
+
+        for(let i = 0; i < tetromino.length; i++){
+            const row = tetromino[i];
+            for(let j = 0; j < row.length; j++){
+                if (row[j] === 'x'){
+                    area[y + i][x+j] = tetromino[i][j];
+                }
+            }
+        }
+        return area;
+    }
 }
-
-
 
 
 // отрисовка
@@ -74,7 +87,7 @@ const showArea = area => {
         for(let x = 0; x < line.length; x++){
             const block = line[x];
             if(block === 'x'){
-                context.fillStyle = 'tomato'
+                context.fillStyle = 'green'
                 context.strokeStyle = 'white';
                 context.fillRect(x * SIZE_BLOCK, y * SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
                 context.strokeRect(x * SIZE_BLOCK, y * SIZE_BLOCK, SIZE_BLOCK, SIZE_BLOCK);
@@ -83,4 +96,4 @@ const showArea = area => {
     }
 };
 
-showArea(game.area)
+showArea(game.viewArea);
