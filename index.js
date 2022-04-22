@@ -1,4 +1,4 @@
-const SIZE_BLOCK = 40;
+const SIZE_BLOCK = 38;
 
 //механика
 
